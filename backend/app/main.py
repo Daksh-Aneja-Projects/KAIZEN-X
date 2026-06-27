@@ -37,9 +37,9 @@ async def startup():
     await init_db()
     
     # Run Bootstrap Service
-    from .database import async_session
+    from .database import AsyncSessionLocal
     from .services.bootstrap.BootstrapService import BootstrapService
-    async with async_session() as db:
+    async with AsyncSessionLocal() as db:
         bootstrapper = BootstrapService(db)
         await bootstrapper.run_if_empty()
     

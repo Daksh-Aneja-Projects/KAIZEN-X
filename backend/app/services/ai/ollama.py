@@ -64,6 +64,35 @@ class UnifiedAIProvider:
             print(f"Inference failed: {e}")
             return self._deterministic_fallback("reasoning")
 
+    async def generate_text(self, prompt: str, system_prompt: str = "You are an AI assistant.") -> str:
+        if not self.is_initialized:
+            await self.initialize()
+            
+        model = self.router.get_best_model(Capability.REASONING)
+        if not model:
+            return "Deterministic output: Execution plan ready."
+
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": prompt}
+        ]
+        
+        payload = {
+            "model": model,
+            "messages": messages,
+            "stream": False,
+            "options": {"temperature": 0.1}
+        }
+        
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload, timeout=30.0)
+                resp.raise_for_status()
+                return resp.json()["message"]["content"]
+        except Exception as e:
+            print(f"generate_text failed: {e}")
+            return "Deterministic fallback output generated due to AI unavailability."
+
     def _deterministic_fallback(self, task: str) -> dict:
         return {
             "analysis": "Deterministic analysis triggered due to AI unavailability. The blast radius is contained but requires immediate action.",

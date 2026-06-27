@@ -4,12 +4,12 @@ from sklearn.cluster import AgglomerativeClustering
 import numpy as np
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..models import OutcomeCluster, FutureOutcome
-from .ai.ollama import OllamaProvider
+from .ai.ollama import UnifiedAIProvider
 
 class OutcomeSpaceExplorer:
     def __init__(self, db: AsyncSession):
         self.db = db
-        self.provider = OllamaProvider()
+        self.provider = UnifiedAIProvider()
 
     async def cluster_outcomes(self, scenario_id: str, outcomes_data: list):
         """

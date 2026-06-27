@@ -78,6 +78,15 @@ class BootstrapService:
         self.db.add_all(events)
 
     async def seed_scenarios(self):
+        fs = FutureScenario(
+            id="SCN-CURRENT",
+            name="Vendor Alpha Insolvency - Base Scenario",
+            description="The live scenario tracked by the Enterprise State Engine.",
+            parameters={},
+            created_at=datetime.utcnow()
+        )
+        self.db.add(fs)
+
         scenario = ScenarioState(
             id="SCN-CURRENT",
             name="Vendor Alpha Insolvency",
@@ -92,10 +101,12 @@ class BootstrapService:
             impact_metrics={"cost": 1250000, "delay": 14}
         )
         self.db.add(scenario)
+        await self.db.flush()
 
     async def seed_future_outcomes(self):
         scenario = FutureScenario(id="FUT-01", name="Vendor Collapse Forecast", description="10k Simulations", parameters={})
         self.db.add(scenario)
+        await self.db.flush()
         
         outcome = FutureOutcome(
             id="FO-01",
@@ -128,21 +139,21 @@ class BootstrapService:
     async def seed_agent_swarm(self):
         from ...models import AgentInteraction, AgentRecommendation, ConsensusResult
         interactions = [
-            AgentInteraction(id="INT-1", scenario_id="SCN-CURRENT", agent_name="Risk Agent", message="Vendor Alpha risk exposure identified at $15.5M.", timestamp=datetime.utcnow() - timedelta(minutes=45), role="analyst", tokens_used=125, inference_time_ms=850),
-            AgentInteraction(id="INT-2", scenario_id="SCN-CURRENT", agent_name="Finance Agent", message="Impact reduces to $2.4M if we switch to Vendor Beta within 14 days.", timestamp=datetime.utcnow() - timedelta(minutes=40), role="analyst", tokens_used=312, inference_time_ms=1120),
-            AgentInteraction(id="INT-3", scenario_id="SCN-CURRENT", agent_name="Ops Agent", message="Switching routing requires SAP reconfiguration. Executing dry run.", timestamp=datetime.utcnow() - timedelta(minutes=35), role="analyst", tokens_used=198, inference_time_ms=900)
+            AgentInteraction(id="INT-1", scenario_id="SCN-CURRENT", agent_name="Risk Agent", prompt="Analyze Vendor Alpha risk exposure.", reasoning={"output": "Vendor Alpha risk exposure identified at $15.5M.", "role": "analyst", "tokens_used": 125, "inference_time_ms": 850}, timestamp=datetime.utcnow() - timedelta(minutes=45)),
+            AgentInteraction(id="INT-2", scenario_id="SCN-CURRENT", agent_name="Finance Agent", prompt="Evaluate financial impact of Vendor Beta.", reasoning={"output": "Impact reduces to $2.4M if we switch to Vendor Beta within 14 days.", "role": "analyst", "tokens_used": 312, "inference_time_ms": 1120}, timestamp=datetime.utcnow() - timedelta(minutes=40)),
+            AgentInteraction(id="INT-3", scenario_id="SCN-CURRENT", agent_name="Ops Agent", prompt="Determine operational viability of switch.", reasoning={"output": "Switching routing requires SAP reconfiguration. Executing dry run.", "role": "analyst", "tokens_used": 198, "inference_time_ms": 900}, timestamp=datetime.utcnow() - timedelta(minutes=35))
         ]
         self.db.add_all(interactions)
 
         recs = [
-            AgentRecommendation(id="REC-1", scenario_id="SCN-CURRENT", agent_name="Finance Agent", recommendation="Trigger contract clause 4.2 with Vendor Beta.", rationale="Minimizes cost impact.", confidence=0.88, complexity=0.3, expected_benefit=1.2, timestamp=datetime.utcnow() - timedelta(minutes=30)),
-            AgentRecommendation(id="REC-2", scenario_id="SCN-CURRENT", agent_name="Executive Agent", recommendation="Initiate Enterprise Failover to Vendor Beta", rationale="Consensus reached across all domains. Risk > Threshold.", confidence=0.92, complexity=0.7, expected_benefit=2.4, timestamp=datetime.utcnow() - timedelta(minutes=15))
+            AgentRecommendation(id="REC-1", scenario_id="SCN-CURRENT", agent_name="Finance Agent", recommendation="Trigger contract clause 4.2 with Vendor Beta. Minimizes cost impact.", confidence=0.88, complexity=0.3, expected_benefit=1.2, dependencies=[], timestamp=datetime.utcnow() - timedelta(minutes=30)),
+            AgentRecommendation(id="REC-2", scenario_id="SCN-CURRENT", agent_name="Executive Agent", recommendation="Initiate Enterprise Failover to Vendor Beta. Consensus reached across all domains. Risk > Threshold.", confidence=0.92, complexity=0.7, expected_benefit=2.4, dependencies=[], timestamp=datetime.utcnow() - timedelta(minutes=15))
         ]
         self.db.add_all(recs)
 
         consensus = ConsensusResult(
-            id="CON-1", scenario_id="SCN-CURRENT", final_decision="Execute Failover to Vendor Beta",
-            readiness_score=92.0, rationale="Swarm consensus reached. Finance and Ops aligned.", timestamp=datetime.utcnow() - timedelta(minutes=10)
+            id="CON-1", scenario_id="SCN-CURRENT", final_recommendation="Execute Failover to Vendor Beta",
+            execution_readiness_score=92.0, agreement_score=0.9, conflict_score=0.1, executive_confidence=0.88, timestamp=datetime.utcnow() - timedelta(minutes=10)
         )
         self.db.add(consensus)
 
@@ -163,8 +174,9 @@ class BootstrapService:
             estimated_duration_days=14
         )
         self.db.add_all([path1, path2])
+        await self.db.flush()
 
-        plan = ExecutionPlan(id="PLAN-1", scenario_id="SCN-CURRENT", recovery_path_id="PATH-1", status="PENDING_APPROVAL", progress=0.0, timestamp=datetime.utcnow())
+        plan = ExecutionPlan(id="PLAN-1", scenario_id="SCN-CURRENT", recovery_path_id="PATH-1", status="PENDING", timestamp=datetime.utcnow())
         self.db.add(plan)
         
         # Link earlier actions to this plan
@@ -173,5 +185,5 @@ class BootstrapService:
         for a in actions:
             a.plan_id = "PLAN-1"
         
-        approval = ApprovalRequest(id="APP-1", plan_id="PLAN-1", requestor="Executive Agent", approver_role="CIO", status="PENDING", timestamp=datetime.utcnow())
+        approval = ApprovalRequest(id="APP-1", action_id="ACT-4", status="PENDING", requested_at=datetime.utcnow())
         self.db.add(approval)

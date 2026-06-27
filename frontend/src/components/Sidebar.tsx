@@ -75,7 +75,7 @@ export default function Sidebar() {
           <span className="text-[var(--color-text-muted)] uppercase tracking-wider flex items-center gap-2">
             <BrainCircuit className="w-3 h-3" /> Local LLM
           </span>
-          <span className="text-[var(--color-primary)] font-bold truncate max-w-[80px]">qwen2.5:14b</span>
+          <span className="text-[var(--color-primary)] font-bold truncate max-w-[120px]">qwen2.5-coder:7b</span>
         </div>
       </div>
     </div>

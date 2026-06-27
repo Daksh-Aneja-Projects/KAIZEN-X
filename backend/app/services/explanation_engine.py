@@ -1,9 +1,9 @@
 import json
-from .ai.ollama import OllamaProvider
+from .ai.ollama import UnifiedAIProvider
 
 class ExplanationEngine:
     def __init__(self):
-        self.provider = OllamaProvider()
+        self.provider = UnifiedAIProvider()
 
     async def generate_explanation(self, scenario_name: str, impact_data: dict) -> dict:
         """
