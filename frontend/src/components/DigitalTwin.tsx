@@ -101,11 +101,11 @@ export default function DigitalTwin() {
         'label': 'data(label)',
         'color': '#8b9bb4',
         'font-family': 'monospace',
-        'font-size': '7px',
+        'font-size': '14px',
         'text-valign': 'bottom',
-        'text-margin-y': 4,
-        'width': 14,
-        'height': 14
+        'text-margin-y': 8,
+        'width': 50,
+        'height': 50
       }
     },
     {
@@ -123,12 +123,12 @@ export default function DigitalTwin() {
     {
       selector: 'edge',
       style: {
-        'width': 0.5,
-        'line-color': 'rgba(255,255,255,0.05)',
-        'target-arrow-color': 'rgba(255,255,255,0.05)',
+        'width': 2,
+        'line-color': 'rgba(255,255,255,0.15)',
+        'target-arrow-color': 'rgba(255,255,255,0.15)',
         'target-arrow-shape': 'triangle',
         'curve-style': 'bezier',
-        'arrow-scale': 0.4
+        'arrow-scale': 1.5
       }
     },
     {
@@ -184,7 +184,7 @@ export default function DigitalTwin() {
             elements={elements}
             style={{ width: '100%', height: '100%' }}
             stylesheet={stylesheet}
-            layout={{ name: 'concentric', fit: true, padding: 100, minNodeSpacing: 150, spacingFactor: 2 }}
+            layout={{ name: 'breadthfirst', directed: true, spacingFactor: 3, fit: true, padding: 80 }}
             cy={(cy) => {
               cyRef.current = cy
               cy.on('tap', 'node', (evt) => {
