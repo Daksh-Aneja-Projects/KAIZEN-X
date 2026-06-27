@@ -75,7 +75,7 @@ export default function ExecutiveCommandCenter() {
             </div>
             <span className="text-2xl font-bold font-mono tracking-tight z-10" style={{ color: "white" }}>{kpi.value}</span>
             <div className="absolute -bottom-4 -right-4 w-16 h-16 rounded-full opacity-10 blur-xl" style={{ backgroundColor: kpi.color }}></div>
-            <div className="absolute inset-0 bg-[url('/bg-grid.png')] opacity-[0.03] pointer-events-none"></div>
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]"></div>
           </div>
         ))}
       </div>
@@ -101,7 +101,7 @@ export default function ExecutiveCommandCenter() {
                    </defs>
                    <XAxis dataKey="name" stroke="var(--color-border-active)" fontSize={9} fontFamily="monospace" tickLine={false} axisLine={false} />
                    <YAxis stroke="var(--color-border-active)" fontSize={9} fontFamily="monospace" tickLine={false} axisLine={false} domain={['dataMin - 5', 100]} />
-                   <Tooltip contentStyle={{ backgroundColor: 'var(--color-panel)', border: '1px solid var(--color-border-subtle)', borderRadius: '2px', fontSize: '10px', fontFamily: 'monospace' }} />
+                   <Tooltip contentStyle={{ backgroundColor: '#0B1220', border: '1px solid #1e293b', borderRadius: '4px', fontSize: '11px', fontFamily: 'monospace' }} itemStyle={{ color: '#00E5FF' }} labelStyle={{ color: '#8b9bb4' }} />
                    <Area type="step" dataKey="score" stroke="var(--color-primary)" strokeWidth={2} fillOpacity={1} fill="url(#colorScore)" />
                  </AreaChart>
                </ResponsiveContainer>
@@ -119,7 +119,7 @@ export default function ExecutiveCommandCenter() {
                     <PolarGrid stroke="var(--color-border-subtle)" />
                     <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--color-text-muted)', fontSize: 9, fontFamily: 'monospace' }} />
                     <Radar name="Threat" dataKey="A" stroke="var(--color-warning)" fill="var(--color-warning)" fillOpacity={0.2} strokeWidth={1} />
-                    <Tooltip contentStyle={{ backgroundColor: 'var(--color-panel)', border: '1px solid var(--color-border-subtle)', borderRadius: '2px', fontSize: '10px', fontFamily: 'monospace' }} />
+                    <Tooltip contentStyle={{ backgroundColor: '#0B1220', border: '1px solid #1e293b', borderRadius: '4px', fontSize: '11px', fontFamily: 'monospace' }} itemStyle={{ color: '#00E5FF' }} labelStyle={{ color: '#8b9bb4' }} />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>

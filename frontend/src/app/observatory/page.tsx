@@ -73,7 +73,7 @@ export default function FutureObservatory() {
              {/* Reticle decorations */}
              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[var(--color-primary)] opacity-50"></div>
              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[var(--color-primary)] opacity-50"></div>
-             <div className="absolute inset-0 bg-[url('/bg-grid.png')] opacity-[0.03] pointer-events-none"></div>
+             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]"></div>
 
              <div className="flex-1 w-full relative z-10">
                <ResponsiveContainer width="100%" height="100%">
@@ -83,7 +83,9 @@ export default function FutureObservatory() {
                    <ZAxis type="number" dataKey="count" range={[50, 400]} />
                    <Tooltip 
                       cursor={{ stroke: 'var(--color-border-active)', strokeDasharray: '3 3' }} 
-                      contentStyle={{ backgroundColor: 'var(--color-panel)', border: '1px solid var(--color-border-subtle)', borderRadius: '2px', fontSize: '10px', fontFamily: 'monospace' }} 
+                      contentStyle={{ backgroundColor: '#0B1220', border: '1px solid #1e293b', borderRadius: '4px', fontSize: '11px', fontFamily: 'monospace' }} 
+                      itemStyle={{ color: '#00E5FF' }}
+                      labelStyle={{ color: '#8b9bb4' }}
                    />
                    <Scatter data={clusters || []} onClick={(e) => setSelectedCluster(e.payload)}>
                      {
@@ -112,7 +114,7 @@ export default function FutureObservatory() {
                     </defs>
                     <XAxis dataKey="x" hide />
                     <YAxis hide />
-                    <Tooltip contentStyle={{ backgroundColor: 'var(--color-panel)', border: '1px solid var(--color-border-subtle)'}} />
+                    <Tooltip contentStyle={{ backgroundColor: '#0B1220', border: '1px solid #1e293b', borderRadius: '4px', fontSize: '11px', fontFamily: 'monospace' }} itemStyle={{ color: '#00E5FF' }} labelStyle={{ color: '#8b9bb4' }} />
                     <Area type="monotone" dataKey="probability" stroke="var(--color-primary)" fill="url(#probGrad)" strokeWidth={2} />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -220,7 +222,7 @@ export default function FutureObservatory() {
                    </div>
                  </motion.div>
               ) : (
-                <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col items-center justify-center text-[var(--color-text-muted)] h-full min-h-[300px] bg-[url('/bg-grid.png')] bg-[size:10px_10px] opacity-30">
+                <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col items-center justify-center text-[var(--color-text-muted)] h-full min-h-[300px] opacity-30 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]">
                    <HelpCircle className="w-10 h-10 mb-4 opacity-50 text-[var(--color-primary)]" />
                    <p className="text-[9px] font-mono uppercase tracking-widest text-center">Select an outcome cluster<br/>to extract dimensions</p>
                 </motion.div>

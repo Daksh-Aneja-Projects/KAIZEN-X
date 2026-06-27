@@ -32,7 +32,7 @@ export default function DemoHero() {
     <div className="min-h-screen bg-[#030712] text-white flex flex-col items-center justify-center relative overflow-hidden font-sans">
       
       {/* Background Grids & Orbs */}
-      <div className="absolute inset-0 bg-[url('/bg-grid.png')] opacity-10 bg-repeat pointer-events-none"></div>
+      <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#00E5FF] rounded-full opacity-[0.02] blur-[150px] pointer-events-none"></div>
       
       <AnimatePresence mode="wait">
