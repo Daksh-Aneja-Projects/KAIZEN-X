@@ -1,0 +1,27 @@
+{
+  "id": "SCENARIO-VENDOR-BANKRUPTCY",
+  "name": "Strategic Vendor Bankruptcy",
+  "description": "A strategic supplier unexpectedly declares bankruptcy, causing downstream supply chain and manufacturing failures.",
+  "trigger": {
+    "type": "VENDOR_STATUS_CHANGE",
+    "target_id": "VENDOR-GLOBALTECH",
+    "payload": {
+      "status": "BANKRUPT",
+      "impact_multiplier": 5.0
+    }
+  },
+  "timeline": [
+    {"time_offset_seconds": 0, "event": "Vendor Bankruptcy Declared", "severity": "CRITICAL"},
+    {"time_offset_seconds": 2, "event": "Manufacturing Delays Detected", "severity": "HIGH"},
+    {"time_offset_seconds": 4, "event": "ERP Purchase Orders Blocked", "severity": "MEDIUM"}
+  ],
+  "expected_kpis": [
+    {"metric": "health_score", "target_delta": -15.0},
+    {"metric": "risk_exposure", "target_delta": 40.0}
+  ],
+  "agent_objectives": [
+    {"agent": "Risk Agent", "objective": "Assess financial exposure and blast radius of the vendor loss."},
+    {"agent": "Operations Agent", "objective": "Identify alternative suppliers and reroute manufacturing dependencies."},
+    {"agent": "Executive Agent", "objective": "Synthesize recommendations and propose the UiPath offboarding workflow."}
+  ]
+}
