@@ -160,15 +160,18 @@ class BootstrapService:
         interactions = [
             AgentInteraction(id="INT-1", scenario_id="SCN-CURRENT", agent_name="Risk Agent", prompt="Analyze Vendor Alpha risk exposure.", reasoning={"output": "Vendor Alpha risk exposure identified at $15.5M.", "role": "analyst", "tokens_used": 125, "inference_time_ms": 850}, timestamp=datetime.utcnow() - timedelta(minutes=45)),
             AgentInteraction(id="INT-2", scenario_id="SCN-CURRENT", agent_name="Finance Agent", prompt="Evaluate financial impact of Vendor Beta.", reasoning={"output": "Impact reduces to $2.4M if we switch to Vendor Beta within 14 days.", "role": "analyst", "tokens_used": 312, "inference_time_ms": 1120}, timestamp=datetime.utcnow() - timedelta(minutes=40)),
-            AgentInteraction(id="INT-3", scenario_id="SCN-CURRENT", agent_name="Ops Agent", prompt="Determine operational viability of switch.", reasoning={"output": "Switching routing requires SAP reconfiguration. Executing dry run.", "role": "analyst", "tokens_used": 198, "inference_time_ms": 900}, timestamp=datetime.utcnow() - timedelta(minutes=35))
+            AgentInteraction(id="INT-3", scenario_id="SCN-CURRENT", agent_name="Ops Agent", prompt="Determine operational viability of switch.", reasoning={"output": "Switching routing requires SAP reconfiguration. Executing dry run.", "role": "analyst", "tokens_used": 198, "inference_time_ms": 900}, timestamp=datetime.utcnow() - timedelta(minutes=35)),
+            AgentInteraction(id="INT-4", scenario_id="SCN-CURRENT", agent_name="Strategy Agent", prompt="Propose strategic realignment.", reasoning={"output": "Realigning supply chain to Vendor Beta ensures long-term resilience and aligns with Q3 strategic objectives.", "role": "analyst", "tokens_used": 415, "inference_time_ms": 1350}, timestamp=datetime.utcnow() - timedelta(minutes=30)),
+            AgentInteraction(id="INT-5", scenario_id="SCN-CURRENT", agent_name="Executive Agent", prompt="Aggregate findings and formulate final directive.", reasoning={"output": "Consensus reached. Risk profile acceptable. Finance and Ops aligned. Authorizing immediate switch to Vendor Beta.", "role": "executive", "tokens_used": 520, "inference_time_ms": 2100}, timestamp=datetime.utcnow() - timedelta(minutes=15))
         ]
         self.db.add_all(interactions)
 
-        recs = [
-            AgentRecommendation(id="REC-1", scenario_id="SCN-CURRENT", agent_name="Finance Agent", recommendation="Trigger contract clause 4.2 with Vendor Beta. Minimizes cost impact.", confidence=0.88, complexity=0.3, expected_benefit=1.2, dependencies=[], timestamp=datetime.utcnow() - timedelta(minutes=30)),
-            AgentRecommendation(id="REC-2", scenario_id="SCN-CURRENT", agent_name="Executive Agent", recommendation="Initiate Enterprise Failover to Vendor Beta. Consensus reached across all domains. Risk > Threshold.", confidence=0.92, complexity=0.7, expected_benefit=2.4, dependencies=[], timestamp=datetime.utcnow() - timedelta(minutes=15))
+        recommendations = [
+            AgentRecommendation(id="REC-1", scenario_id="SCN-CURRENT", agent_name="Finance Agent", recommendation="Trigger contract clause 4.2 with Vendor Beta. Minimizes cost impact.", confidence=0.85, timestamp=datetime.utcnow() - timedelta(minutes=20)),
+            AgentRecommendation(id="REC-1B", scenario_id="SCN-CURRENT", agent_name="Strategy Agent", recommendation="Shift primary sourcing to Vendor Beta to mitigate Q3 supply chain shocks.", confidence=0.88, timestamp=datetime.utcnow() - timedelta(minutes=15)),
+            AgentRecommendation(id="REC-2", scenario_id="SCN-CURRENT", agent_name="Executive Agent", recommendation="Initiate Enterprise Failover to Vendor Beta. Consensus reached across all domains. Risk < Threshold.", confidence=0.92, timestamp=datetime.utcnow() - timedelta(minutes=5))
         ]
-        self.db.add_all(recs)
+        self.db.add_all(recommendations)
 
         consensus = ConsensusResult(
             id="CON-1", scenario_id="SCN-CURRENT", final_recommendation="Execute Failover to Vendor Beta",
