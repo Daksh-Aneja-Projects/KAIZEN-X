@@ -78,11 +78,11 @@ export default function WarRoom() {
                  <div className="grid grid-cols-2 gap-2 text-[8px] font-mono uppercase tracking-widest text-[var(--color-text-muted)]">
                    <div className="border border-[var(--color-border-subtle)] bg-white/[0.01] p-1.5 flex justify-between">
                      <span>Tokens</span>
-                     <span className="text-white">{interactions[0]?.tokens_used || '---'}</span>
+                     <span className="text-white">{interactions[0]?.reasoning?.tokens_used || '---'}</span>
                    </div>
                    <div className="border border-[var(--color-border-subtle)] bg-white/[0.01] p-1.5 flex justify-between">
                      <span>Latency</span>
-                     <span className="text-white">{interactions[0]?.inference_time_ms ? `${interactions[0].inference_time_ms}ms` : '---'}</span>
+                     <span className="text-white">{interactions[0]?.reasoning?.inference_time_ms ? `${interactions[0].reasoning.inference_time_ms}ms` : '---'}</span>
                    </div>
                  </div>
                </div>
@@ -94,7 +94,7 @@ export default function WarRoom() {
                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={interaction.id} className="mb-4">
                         <div className="flex items-start gap-2 text-[10px] font-mono leading-relaxed text-gray-300">
                            <MessageSquare className="w-3 h-3 mt-0.5 shrink-0" style={{ color: agent.color }} />
-                           <div className="break-words border-l border-white/5 pl-2">{interaction.message}</div>
+                           <div className="break-words border-l border-white/5 pl-2">{interaction.reasoning?.output || interaction.prompt || interaction.message}</div>
                         </div>
                      </motion.div>
                    ))}
