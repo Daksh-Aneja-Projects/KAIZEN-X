@@ -143,10 +143,10 @@ export default function DigitalTwin() {
   ]
 
   return (
-    <div className="w-full h-full flex overflow-hidden font-sans bg-[var(--color-background)]">
+    <div className="w-full h-[calc(100vh-64px)] flex overflow-hidden font-sans bg-[var(--color-background)]">
       
-      {/* Graph Area (70%) */}
-      <div className="flex-1 relative flex flex-col border-r border-[var(--color-border-subtle)]">
+      {/* Main Graph Area */}
+      <div className="w-[75%] h-[calc(100vh-64px)] relative flex flex-col border-r border-[var(--color-border-subtle)]">
         
         {/* Graph Meta Strip */}
         <div className="absolute top-0 left-0 right-0 p-4 z-10 flex justify-between items-start pointer-events-none bg-gradient-to-b from-[var(--color-background)] to-transparent">
@@ -179,7 +179,7 @@ export default function DigitalTwin() {
         </div>
 
         {/* Cytoscape Canvas */}
-        <div className="flex-1 bg-[url('/bg-grid.png')] bg-[size:40px_40px] opacity-90">
+        <div className="w-full h-full bg-[url('/bg-grid.png')] bg-[size:40px_40px] opacity-90">
           <CytoscapeComponent
             elements={elements}
             style={{ width: '100%', height: '100%' }}
@@ -231,8 +231,8 @@ export default function DigitalTwin() {
         <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-[var(--color-primary)] opacity-30 pointer-events-none"></div>
       </div>
 
-      {/* Intelligence Sidebar (30%) */}
-      <div className="w-[380px] bg-[var(--color-panel)] flex flex-col relative shrink-0">
+      {/* Intelligence Side Panel */}
+      <div className="w-[25%] h-[calc(100vh-64px)] overflow-y-auto bg-[var(--color-panel-bg)] flex flex-col">
         <AnimatePresence mode="wait">
           {selectedNode ? (
             <motion.div 
