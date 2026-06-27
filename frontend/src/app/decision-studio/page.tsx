@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { API_URL } from '@/lib/api'
 import { LayoutDashboard, Target, Zap, Clock, TrendingUp, Cpu, Activity, ShieldCheck, CheckCircle2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { toast } from 'sonner'
 
 import { useState } from 'react'
 
@@ -20,7 +21,13 @@ export default function DecisionStudio() {
 
   const handleExecute = async () => {
     setIsExecuting(true)
-    await fetch(`${API_URL}/api/execution/approve/1`, { method: 'POST' })
+    toast.loading("Executing final executive directives...", { id: 'exec' })
+    try {
+      await fetch(`${API_URL}/api/execution/approve/1`, { method: 'POST' })
+      toast.success("Directives successfully executed and propagated to orchestrator.", { id: 'exec' })
+    } catch(e) {
+      toast.error("Execution failed.", { id: 'exec' })
+    }
     setIsExecuting(false)
   }
 
@@ -54,7 +61,7 @@ export default function DecisionStudio() {
              </h3>
              <div className="relative mb-6">
                <div className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-[var(--color-success)] to-[#047857] tracking-tighter">
-                 {Math.round((data?.readiness_metrics?.execution_readiness_score || 0.92) * 100)}
+                 {Math.round((data?.readiness_metrics?.execution_readiness_score || 0.92) > 1 ? (data?.readiness_metrics?.execution_readiness_score || 0.92) : (data?.readiness_metrics?.execution_readiness_score || 0.92) * 100)}
                </div>
                <span className="absolute top-2 -right-6 text-[var(--color-success)] font-bold text-xl">%</span>
              </div>
@@ -162,7 +169,7 @@ export default function DecisionStudio() {
                   </div>
 
                   <div className="col-span-1 flex justify-end">
-                    <button className="w-6 h-6 border border-[var(--color-border-subtle)] flex items-center justify-center group-hover:border-[var(--color-primary)] group-hover:text-[var(--color-primary)] transition-colors rounded-sm text-[var(--color-text-muted)]">
+                    <button onClick={(e) => { e.stopPropagation(); toast.success(`Selected Path P-0${index + 1} for optimal execution routing.`); }} className="w-6 h-6 border border-[var(--color-border-subtle)] flex items-center justify-center group-hover:border-[var(--color-primary)] group-hover:text-[var(--color-primary)] transition-colors rounded-sm text-[var(--color-text-muted)]">
                       <Cpu className="w-3 h-3" />
                     </button>
                   </div>

@@ -181,10 +181,10 @@ export default function DigitalTwin() {
   ]
 
   return (
-    <div className="w-full h-[calc(100vh-64px)] flex overflow-hidden font-sans bg-[var(--color-background)]">
+    <div className="w-full h-full flex overflow-hidden font-sans bg-[var(--color-background)]">
       
       {/* Main Graph Area */}
-      <div className="w-[75%] h-[calc(100vh-64px)] relative flex flex-col border-r border-[var(--color-border-subtle)]">
+      <div className="w-[75%] h-full relative flex flex-col border-r border-[var(--color-border-subtle)]">
         
         {/* Graph Meta Strip */}
         <div className="absolute top-0 left-0 right-0 p-4 z-10 flex justify-between items-start pointer-events-none bg-gradient-to-b from-[var(--color-background)] to-transparent">
@@ -270,7 +270,7 @@ export default function DigitalTwin() {
       </div>
 
       {/* Intelligence Side Panel */}
-      <div className="w-[25%] h-[calc(100vh-64px)] overflow-y-auto bg-[var(--color-panel-bg)] flex flex-col">
+      <div className="w-[25%] h-full overflow-y-auto bg-[var(--color-panel-bg)] flex flex-col">
         <AnimatePresence mode="wait">
           {selectedNode ? (
             <motion.div 
@@ -343,11 +343,19 @@ export default function DigitalTwin() {
               {/* Actions */}
               <div className="p-5 border-t border-[var(--color-border-subtle)] flex flex-col gap-2 bg-[#050810]">
                 <h3 className="text-[9px] font-mono uppercase tracking-widest text-gray-500 mb-2">Available Interventions</h3>
-                <button className="w-full text-left bg-transparent hover:bg-[var(--color-primary)]/5 border border-[var(--color-border-subtle)] hover:border-[var(--color-border-active)] p-2.5 rounded-sm text-[10px] font-mono text-gray-300 hover:text-[var(--color-primary)] transition-colors flex justify-between items-center group">
+                <button onClick={() => toast.success(`Isolating entity [${selectedNode.id}] at network level. Traffic routing updated.`)} className="w-full text-left bg-transparent hover:bg-[var(--color-primary)]/5 border border-[var(--color-border-subtle)] hover:border-[var(--color-border-active)] p-2.5 rounded-sm text-[10px] font-mono text-gray-300 hover:text-[var(--color-primary)] transition-colors flex justify-between items-center group">
                   <span>[01] Isolate Entity</span>
                   <ArrowRight className="w-3 h-3 text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)]" />
                 </button>
-                <button className="w-full text-left bg-transparent hover:bg-[var(--color-critical)]/5 border border-[var(--color-border-subtle)] hover:border-[var(--color-critical)]/50 p-2.5 rounded-sm text-[10px] font-mono text-gray-300 hover:text-[var(--color-critical)] transition-colors flex justify-between items-center group">
+                <button onClick={async () => {
+                   toast.loading("Initiating failover protocol...", { id: "failover" });
+                   try {
+                     await fetch(`${API_URL}/api/execution/plan?scenario_id=1&recovery_path_id=1`, { method: 'POST' });
+                     toast.success(`Failover protocol dispatched to execution engine.`, { id: "failover" });
+                   } catch(e) {
+                     toast.error("Failover dispatch failed", { id: "failover" });
+                   }
+                }} className="w-full text-left bg-transparent hover:bg-[var(--color-critical)]/5 border border-[var(--color-border-subtle)] hover:border-[var(--color-critical)]/50 p-2.5 rounded-sm text-[10px] font-mono text-gray-300 hover:text-[var(--color-critical)] transition-colors flex justify-between items-center group">
                   <span>[02] Trigger Failover Protocol</span>
                   <ArrowRight className="w-3 h-3 text-[var(--color-text-muted)] group-hover:text-[var(--color-critical)]" />
                 </button>

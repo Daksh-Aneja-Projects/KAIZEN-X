@@ -123,7 +123,7 @@ export default function Boardroom() {
                </svg>
                <div className="text-center">
                  <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-[var(--color-success)] to-[#047857] tracking-tighter">
-                   {Math.round((data?.readiness?.execution_readiness_score || 0.94) * 100)}
+                   {Math.round((data?.readiness?.execution_readiness_score || 0.94) > 1 ? (data?.readiness?.execution_readiness_score || 0.94) : (data?.readiness?.execution_readiness_score || 0.94) * 100)}
                  </div>
                  <div className="text-[8px] uppercase tracking-widest text-[var(--color-success)] mt-1 font-bold font-mono">Score</div>
                </div>

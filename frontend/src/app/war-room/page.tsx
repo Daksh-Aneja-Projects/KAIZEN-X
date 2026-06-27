@@ -134,7 +134,7 @@ export default function WarRoom() {
           </div>
           <div>
             <h3 className="text-[10px] uppercase font-mono tracking-widest text-[var(--color-text-muted)]">Swarm Consensus Reached</h3>
-            <p className="text-sm font-bold text-white uppercase tracking-wider">{data?.consensus?.final_decision || "AWAITING SWARM CONVERGENCE"}</p>
+            <p className="text-sm font-bold text-white uppercase tracking-wider">{data?.consensus?.final_recommendation || "AWAITING SWARM CONVERGENCE"}</p>
           </div>
         </div>
         
@@ -142,12 +142,12 @@ export default function WarRoom() {
           <div className="flex gap-6 items-center">
             <div className="text-right">
               <div className="text-[8px] uppercase font-mono tracking-widest text-[var(--color-text-muted)]">Readiness Score</div>
-              <div className="text-lg font-mono font-bold text-[var(--color-success)]">{data.consensus.readiness_score}%</div>
+              <div className="text-lg font-mono font-bold text-[var(--color-success)]">{data.consensus.execution_readiness_score}%</div>
             </div>
             <div className="w-px h-8 bg-[var(--color-border-subtle)]"></div>
             <div className="text-right max-w-[300px]">
                <div className="text-[8px] uppercase font-mono tracking-widest text-[var(--color-text-muted)]">Executive Rationale</div>
-               <div className="text-[9px] font-mono text-gray-300 truncate">{data.consensus.rationale}</div>
+               <div className="text-[9px] font-mono text-gray-300 truncate">{data.recommendations?.find((r: any) => r.agent_name === 'Executive Agent')?.recommendation || data.consensus.final_recommendation}</div>
             </div>
           </div>
         )}

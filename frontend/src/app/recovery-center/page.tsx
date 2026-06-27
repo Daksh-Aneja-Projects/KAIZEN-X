@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { API_URL } from '@/lib/api'
 import { ServerCog, Play, CheckCircle, Clock, ShieldAlert, Lock, TerminalSquare, Cpu, Activity, Network } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { toast } from 'sonner'
 
 export default function RecoveryCenter() {
   const { data, refetch } = useQuery({
@@ -21,8 +22,25 @@ export default function RecoveryCenter() {
   }
 
   const approveAction = async (id: string) => {
-    await fetch(`${API_URL}/api/execution/approve/${id}`, { method: 'POST' })
-    refetch()
+    toast.loading(`Approving action ${id}...`, { id: 'approval' });
+    try {
+      await fetch(`${API_URL}/api/execution/approve/${id}`, { method: 'POST' })
+      toast.success(`Action ${id} approved`, { id: 'approval' });
+      refetch()
+    } catch (e) {
+      toast.error('Approval failed', { id: 'approval' });
+    }
+  }
+
+  const rejectAction = async (id: string) => {
+    toast.loading(`Rejecting action ${id}...`, { id: 'rejection' });
+    try {
+      await fetch(`${API_URL}/api/execution/reject/${id}`, { method: 'POST' })
+      toast.success(`Action ${id} rejected`, { id: 'rejection' });
+      refetch()
+    } catch (e) {
+      toast.error('Rejection failed', { id: 'rejection' });
+    }
   }
 
   const getIconForConnector = (type: string) => {
@@ -148,7 +166,7 @@ export default function RecoveryCenter() {
                      <button onClick={() => approveAction(req.id)} className="flex-1 bg-[var(--color-warning)]/10 hover:bg-[var(--color-warning)]/20 text-[var(--color-warning)] border border-[var(--color-warning)]/50 font-bold uppercase tracking-widest text-[9px] py-2 rounded-sm transition-colors flex justify-center items-center gap-1">
                        <CheckCircle className="w-3 h-3" /> Approve
                      </button>
-                     <button className="flex-1 bg-transparent hover:bg-red-500/10 text-[var(--color-text-muted)] hover:text-red-500 border border-[var(--color-border-subtle)] hover:border-red-500/50 font-bold uppercase tracking-widest text-[9px] py-2 rounded-sm transition-colors">
+                     <button onClick={() => rejectAction(req.id)} className="flex-1 bg-transparent hover:bg-red-500/10 text-[var(--color-text-muted)] hover:text-red-500 border border-[var(--color-border-subtle)] hover:border-red-500/50 font-bold uppercase tracking-widest text-[9px] py-2 rounded-sm transition-colors">
                        Reject
                      </button>
                    </div>

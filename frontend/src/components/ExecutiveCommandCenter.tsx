@@ -198,10 +198,11 @@ export default function ExecutiveCommandCenter() {
               <AnimatePresence initial={false}>
                 {events.map((event) => (
                   <motion.div
+                    layout
                     key={event.id}
                     initial={{ opacity: 0, height: 0, x: -10 }}
                     animate={{ opacity: 1, height: "auto", x: 0 }}
-                    className="p-2 border border-white/[0.05] bg-black/20 relative overflow-hidden"
+                    className="p-2 border border-white/[0.05] bg-black/20 relative overflow-hidden shrink-0"
                   >
                     <div className={`absolute left-0 top-0 bottom-0 w-0.5 ${
                       event.severity === 'CRITICAL' ? 'bg-[var(--color-critical)]' :

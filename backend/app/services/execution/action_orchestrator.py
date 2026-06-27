@@ -32,6 +32,7 @@ class ActionOrchestrator:
         )
         
         self.db.add_all([a1, a2])
+        await self.db.flush()
         
         # Create approval request for a2
         app_req = ApprovalRequest(id=str(uuid.uuid4()), action_id=a2.id)

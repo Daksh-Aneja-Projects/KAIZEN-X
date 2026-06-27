@@ -5,6 +5,7 @@ import Providers from "@/components/Providers";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 import EnterpriseCognitiveLayer from "@/cve/EnterpriseCognitiveLayer";
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-sans' });
 const robotoMono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
@@ -31,6 +32,7 @@ export default function RootLayout({
               {children}
             </main>
           </div>
+          <Toaster position="bottom-right" theme="dark" toastOptions={{ style: { background: 'black', border: '1px solid var(--color-border-subtle)', color: 'white', fontFamily: 'var(--font-mono)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em' } }} />
         </Providers>
       </body>
     </html>

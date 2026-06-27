@@ -29,7 +29,7 @@ export default function DemoHero() {
   }, [stage, router])
 
   return (
-    <div className="min-h-screen bg-[#030712] text-white flex flex-col items-center justify-center relative overflow-hidden font-sans">
+    <div className="h-full bg-[#030712] text-white flex flex-col items-center justify-center relative overflow-hidden font-sans">
       
       {/* Background Grids & Orbs */}
 

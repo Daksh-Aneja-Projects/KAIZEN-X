@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { cveEngine, CognitiveSnapshot } from './engine';
 import { KaizenAdapter } from './adapter';
 import { TimelinePlugin } from './plugins/TimelinePlugin';
+import { CognitiveStatePlugin } from './plugins/CognitiveStatePlugin';
 import { TimeMachine } from './components/TimeMachine';
 
 export default function EnterpriseCognitiveLayer() {
   const [snapshot, setSnapshot] = useState<CognitiveSnapshot>(cveEngine.getCurrentSnapshot());
   const [eventCount, setEventCount] = useState(0);
-  const [isReplaying, setIsReplaying] = useState(false);
   const [replayIndex, setReplayIndex] = useState(0);
+  const isReplayingRef = React.useRef(false);
 
   useEffect(() => {
     const adapter = new KaizenAdapter();
@@ -22,7 +23,7 @@ export default function EnterpriseCognitiveLayer() {
       setEventCount(events.length);
       
       // Auto-advance if not in replay mode
-      if (!isReplaying) {
+      if (!isReplayingRef.current) {
         setSnapshot(cveEngine.getCurrentSnapshot());
         setReplayIndex(events.length - 1);
       }
@@ -31,13 +32,13 @@ export default function EnterpriseCognitiveLayer() {
     return () => {
       adapter.disconnect();
     };
-  }, [isReplaying]);
+  }, []);
 
   const handleScrub = (index: number) => {
     const events = cveEngine.getEvents();
     if (events.length === 0) return;
     
-    setIsReplaying(index < events.length - 1);
+    isReplayingRef.current = index < events.length - 1;
     setReplayIndex(index);
     
     // Find snapshot corresponding to this event
@@ -53,7 +54,7 @@ export default function EnterpriseCognitiveLayer() {
       {/* Plugin Rendering Zone */}
       <div className="flex flex-col">
         {TimelinePlugin.render(snapshot)}
-        {/* Additional plugins (Attention, Memory) will go here */}
+        {CognitiveStatePlugin.render(snapshot)}
       </div>
 
       {/* Replay Controls */}

@@ -41,3 +41,12 @@ async def approve_action(request_id: str, db: AsyncSession = Depends(get_db)):
         app_req.status = "APPROVED"
         await db.commit()
     return {"status": "Approved"}
+
+@router.post("/reject/{request_id}")
+async def reject_action(request_id: str, db: AsyncSession = Depends(get_db)):
+    res = await db.execute(select(ApprovalRequest).where(ApprovalRequest.id == request_id))
+    app_req = res.scalars().first()
+    if app_req:
+        app_req.status = "REJECTED"
+        await db.commit()
+    return {"status": "Rejected"}

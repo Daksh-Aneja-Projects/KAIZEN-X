@@ -89,6 +89,19 @@ graph TD
 
 ---
 
+## 🖼️ Gallery
+
+<p align="center">
+  <img src="docs/screenshots/dashboard.png" width="48%" alt="Executive Dashboard" />
+  <img src="docs/screenshots/twin.png" width="48%" alt="Digital Twin Graph" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/war_room.png" width="48%" alt="Agent War Room" />
+  <img src="docs/screenshots/decision_studio.png" width="48%" alt="Decision Studio" />
+</p>
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
