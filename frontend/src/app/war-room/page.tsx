@@ -88,7 +88,7 @@ export default function WarRoom() {
                </div>
                
                {/* Streaming Output */}
-               <div className="flex-1 p-4 overflow-y-auto custom-scrollbar relative z-10 opacity-90 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]">
+               <div className="flex-1 p-4 overflow-y-auto custom-scrollbar relative z-10 opacity-90">
                  <AnimatePresence>
                    {interactions.map((interaction: any) => (
                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={interaction.id} className="mb-4">

@@ -75,7 +75,7 @@ export default function ExecutiveCommandCenter() {
             </div>
             <span className="text-2xl font-bold font-mono tracking-tight z-10" style={{ color: "white" }}>{kpi.value}</span>
             <div className="absolute -bottom-4 -right-4 w-16 h-16 rounded-full opacity-10 blur-xl" style={{ backgroundColor: kpi.color }}></div>
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+
           </div>
         ))}
       </div>

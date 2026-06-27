@@ -217,10 +217,7 @@ export default function DigitalTwin() {
         </div>
 
         {/* Cytoscape Canvas */}
-        <div 
-          className="absolute inset-0 opacity-90 z-0"
-          style={{ backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '40px 40px' }}
-        >
+        <div className="absolute inset-0 opacity-90 z-0">
           <CytoscapeComponent
             elements={elements}
             style={{ width: '100%', height: '100%' }}

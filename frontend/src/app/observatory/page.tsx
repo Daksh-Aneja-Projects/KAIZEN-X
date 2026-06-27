@@ -73,7 +73,7 @@ export default function FutureObservatory() {
              {/* Reticle decorations */}
              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[var(--color-primary)] opacity-50"></div>
              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[var(--color-primary)] opacity-50"></div>
-             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+
 
              <div className="flex-1 w-full relative z-10">
                <ResponsiveContainer width="100%" height="100%">
@@ -222,7 +222,7 @@ export default function FutureObservatory() {
                    </div>
                  </motion.div>
               ) : (
-                <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col items-center justify-center text-[var(--color-text-muted)] h-full min-h-[300px] opacity-30 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]">
+                <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col items-center justify-center text-[var(--color-text-muted)] h-full min-h-[300px] opacity-30">
                    <HelpCircle className="w-10 h-10 mb-4 opacity-50 text-[var(--color-primary)]" />
                    <p className="text-[9px] font-mono uppercase tracking-widest text-center">Select an outcome cluster<br/>to extract dimensions</p>
                 </motion.div>
