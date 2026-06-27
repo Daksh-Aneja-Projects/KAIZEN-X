@@ -38,10 +38,38 @@ export default function DigitalTwin() {
           }
           return prev + 1
         })
-      }, 500)
+      }, 1000)
       return () => clearInterval(interval)
     }
   }, [isPlaying, replayEvents])
+
+  // Animate graph on timeline tick
+  useEffect(() => {
+    if (replayEvents && replayEvents.length > 0 && cyRef.current) {
+      const event = replayEvents[replayIndex]
+      if (event && event.entity_id) {
+        const cy = cyRef.current
+        const node = cy.getElementById(event.entity_id)
+        if (node.length > 0) {
+          cy.nodes().style({ 'background-color': '#0B1220', 'border-color': '#00E5FF', 'border-width': 1.5 })
+          
+          node.animate({
+            style: {
+              'background-color': '#FF0055',
+              'border-width': 4,
+              'border-color': '#FFB300'
+            }
+          }, { duration: 300 })
+          
+          setSelectedNode({
+            ...node.data(),
+            event_type: event.event_type,
+            timestamp: event.timestamp
+          })
+        }
+      }
+    }
+  }, [replayIndex, replayEvents])
 
   useEffect(() => {
     fetchTwinGraph().then(data => {
@@ -67,20 +95,20 @@ export default function DigitalTwin() {
         if (payload.type === 'PROPAGATION_STEP' && cyRef.current) {
           const cy = cyRef.current
           const node = cy.getElementById(payload.node_id)
-          if (node) {
+          if (node.length > 0) {
             node.animate({
               style: {
-                'background-color': 'var(--color-critical)',
+                'background-color': '#FF0055',
                 'border-width': 4,
-                'border-color': 'var(--color-warning)'
+                'border-color': '#FFB300'
               }
             }, { duration: 500 })
             
             // Highlight incoming edges
             node.connectedEdges().animate({
               style: {
-                'line-color': 'var(--color-critical)',
-                'target-arrow-color': 'var(--color-critical)',
+                'line-color': '#FF0055',
+                'target-arrow-color': '#FF0055',
                 'width': 2
               }
             }, { duration: 500 })
@@ -189,7 +217,10 @@ export default function DigitalTwin() {
         </div>
 
         {/* Cytoscape Canvas */}
-        <div className="absolute inset-0 bg-[url('/bg-grid.png')] bg-[size:40px_40px] opacity-90 z-0">
+        <div 
+          className="absolute inset-0 opacity-90 z-0"
+          style={{ backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '40px 40px' }}
+        >
           <CytoscapeComponent
             elements={elements}
             style={{ width: '100%', height: '100%' }}
@@ -202,7 +233,7 @@ export default function DigitalTwin() {
                 // Highlight neighborhood
                 cy.elements().style({ 'opacity': 0.15 })
                 evt.target.style({ 'opacity': 1 })
-                evt.target.connectedEdges().style({ 'opacity': 1, 'line-color': 'var(--color-primary)', 'target-arrow-color': 'var(--color-primary)' })
+                evt.target.connectedEdges().style({ 'opacity': 1, 'line-color': '#00E5FF', 'target-arrow-color': '#00E5FF' })
                 evt.target.neighborhood().style({ 'opacity': 1 })
               })
               cy.on('tap', (evt) => {

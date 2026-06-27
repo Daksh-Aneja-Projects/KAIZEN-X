@@ -6,7 +6,8 @@ from sqlalchemy import select, func
 from ...models import (
     TwinNode, TwinEdge, Risk, Event, EnterpriseMetric, 
     FutureScenario, FutureOutcome, OutcomeCluster,
-    ScenarioState, ExecutionAction, Severity, TwinNodeType
+    ScenarioState, ExecutionAction, Severity, TwinNodeType, TwinEdgeType,
+    EventLedger
 )
 
 class BootstrapService:
@@ -81,9 +82,19 @@ class BootstrapService:
         events = [
             Event(id="EVT-001", title="Supply Chain Alert", description="Supplier missed SLA.", severity=Severity.HIGH, source="ERP", impact_score=40.0),
             Event(id="EVT-002", title="Database Latency Spike", description="Latency > 500ms.", severity=Severity.MEDIUM, source="AWS CloudWatch", impact_score=20.0),
-            Event(id="EVT-003", title="Executive Approval Required", description="Recovery plan awaiting signoff.", severity=Severity.LOW, source="Agent Swarm", impact_score=5.0)
+            Event(id="EVT-003", title="Compliance Audit Failure", description="Missing SOC2 doc.", severity=Severity.CRITICAL, source="Audit Tool", impact_score=85.0)
         ]
         self.db.add_all(events)
+        await self.db.flush()
+        
+        import uuid
+        base_time = datetime.utcnow() - timedelta(minutes=5)
+        ledger = [
+            EventLedger(id=str(uuid.uuid4()), timestamp=base_time, entity_type="Node", entity_id="VEN-ALPHA", event_type="Risk Propagated", payload={"risk": "Supplier Delay"}),
+            EventLedger(id=str(uuid.uuid4()), timestamp=base_time + timedelta(seconds=10), entity_type="Node", entity_id="SYS-ERP", event_type="Throughput Dropped", payload={"value": "-15%"}),
+            EventLedger(id=str(uuid.uuid4()), timestamp=base_time + timedelta(seconds=25), entity_type="Node", entity_id="PROJ-PHOENIX", event_type="Timeline Delayed", payload={"days": 14})
+        ]
+        self.db.add_all(ledger)
 
     async def seed_scenarios(self):
         fs = FutureScenario(

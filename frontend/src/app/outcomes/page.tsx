@@ -97,7 +97,7 @@ export default function OutcomeExplorer() {
                  <XAxis type="number" dataKey="coords.cost" stroke="var(--color-border-active)" tick={{fontSize: 9, fontFamily: 'monospace', fill: 'var(--color-text-muted)'}} tickLine={false} axisLine={{stroke: 'var(--color-border-subtle)'}} />
                  <YAxis type="number" dataKey="coords.risk" stroke="var(--color-border-active)" tick={{fontSize: 9, fontFamily: 'monospace', fill: 'var(--color-text-muted)'}} tickLine={false} axisLine={{stroke: 'var(--color-border-subtle)'}} />
                  <ZAxis type="number" dataKey="count" range={[100, 1500]} />
-                 <Tooltip cursor={{ stroke: 'var(--color-border-active)', strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: 'var(--color-panel)', border: '1px solid var(--color-border-subtle)', borderRadius: '2px', fontSize: '10px', fontFamily: 'monospace' }} />
+                 <Tooltip cursor={{ stroke: 'var(--color-border-active)', strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: '#0B1220', border: '1px solid #1e293b', borderRadius: '4px', fontSize: '11px', fontFamily: 'monospace' }} itemStyle={{ color: '#00E5FF' }} labelStyle={{ color: '#8b9bb4' }} />
                  <Scatter data={clusters || []}>
                    {
                      (clusters || []).map((entry: any, index: number) => (
