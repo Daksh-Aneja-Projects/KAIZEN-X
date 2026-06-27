@@ -184,7 +184,7 @@ export default function DigitalTwin() {
             elements={elements}
             style={{ width: '100%', height: '100%' }}
             stylesheet={stylesheet}
-            layout={{ name: 'breadthfirst', directed: true, spacingFactor: 3, fit: true, padding: 80 }}
+            layout={{ name: 'grid', fit: true, padding: 150, avoidOverlap: true, avoidOverlapPadding: 50 }}
             cy={(cy) => {
               cyRef.current = cy
               cy.on('tap', 'node', (evt) => {
