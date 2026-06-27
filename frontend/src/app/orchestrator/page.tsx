@@ -14,7 +14,7 @@ export default function DemoHero() {
   useEffect(() => {
     if (stage === 1) {
       // Step 1: Trigger Backend Scenario
-      fetch(`${API_URL}/api/scenarios/run`, {
+      fetch(`${API_URL}/api/scenarios/supply-chain-disruption`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ scenario: "vendor_bankruptcy.json" })

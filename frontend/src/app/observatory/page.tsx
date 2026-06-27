@@ -10,7 +10,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function FutureObservatory() {
   const [selectedCluster, setSelectedCluster] = useState<any>(null)
   
-  const { data: clusters } = useQuery({
+  const [isSimulating, setIsSimulating] = useState(false)
+  
+  const { data: clusters, refetch: refetchClusters } = useQuery({
     queryKey: ['outcomes'],
     queryFn: async () => {
       const res = await fetch(`${API_URL}/api/futures/outcomes`)
@@ -26,7 +28,7 @@ export default function FutureObservatory() {
     "Catastrophic Futures": "var(--color-critical)"
   }
 
-  const { data: distributionData } = useQuery({
+  const { data: distributionData, refetch: refetchDist } = useQuery({
     queryKey: ['distribution'],
     queryFn: async () => {
       const res = await fetch(`${API_URL}/api/futures/distribution`)
@@ -34,6 +36,14 @@ export default function FutureObservatory() {
     },
     refetchInterval: 1000
   })
+
+  const handleSimulate = async () => {
+    setIsSimulating(true)
+    await fetch(`${API_URL}/api/futures/simulate`, { method: "POST" })
+    refetchClusters()
+    refetchDist()
+    setIsSimulating(false)
+  }
 
   return (
     <div className="w-full h-full flex flex-col font-sans bg-[var(--color-background)] p-6 overflow-hidden">
@@ -48,8 +58,8 @@ export default function FutureObservatory() {
           <p className="text-[10px] text-[var(--color-text-muted)] font-mono uppercase tracking-widest mt-1">Monte Carlo Simulation Engine // 10K Iterations</p>
         </div>
         <div className="flex gap-4">
-          <button className="bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-4 py-2 rounded-sm text-[10px] font-mono font-bold tracking-widest flex items-center gap-2 border border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/20 transition-colors uppercase">
-            <Play className="w-3 h-3" /> Execute Sequence
+          <button disabled={isSimulating} onClick={handleSimulate} className={`bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-4 py-2 rounded-sm text-[10px] font-mono font-bold tracking-widest flex items-center gap-2 border border-[var(--color-primary)]/30 transition-colors uppercase ${isSimulating ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[var(--color-primary)]/20'}`}>
+            <Play className={`w-3 h-3 ${isSimulating ? 'animate-pulse' : ''}`} /> {isSimulating ? 'Simulating...' : 'Execute Sequence'}
           </button>
         </div>
       </div>

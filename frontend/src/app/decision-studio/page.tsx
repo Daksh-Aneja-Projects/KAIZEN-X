@@ -5,7 +5,11 @@ import { API_URL } from '@/lib/api'
 import { LayoutDashboard, Target, Zap, Clock, TrendingUp, Cpu, Activity, ShieldCheck, CheckCircle2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+import { useState } from 'react'
+
 export default function DecisionStudio() {
+  const [isExecuting, setIsExecuting] = useState(false)
+  
   const { data } = useQuery({
     queryKey: ['decision-studio'],
     queryFn: async () => {
@@ -13,6 +17,12 @@ export default function DecisionStudio() {
       return res.json()
     }
   })
+
+  const handleExecute = async () => {
+    setIsExecuting(true)
+    await fetch(`${API_URL}/api/execution/approve/1`, { method: 'POST' })
+    setIsExecuting(false)
+  }
 
   return (
     <div className="w-full h-full flex flex-col font-sans bg-[var(--color-background)] p-6 overflow-hidden">
@@ -27,8 +37,8 @@ export default function DecisionStudio() {
            <p className="text-[10px] text-[var(--color-text-muted)] font-mono uppercase tracking-widest mt-1">Executive Directive Synthesis // Recovery Paths Matrix</p>
         </div>
         <div className="flex gap-4">
-          <button className="bg-[var(--color-success)] text-black px-4 py-2 rounded-sm text-[10px] tracking-widest font-bold flex items-center gap-2 hover:bg-[var(--color-success)]/90 transition-colors shadow-[0_0_15px_rgba(16,185,129,0.3)] uppercase">
-            <Zap className="w-3 h-3" /> Execute Selected Path
+          <button disabled={isExecuting} onClick={handleExecute} className={`bg-[var(--color-success)] text-black px-4 py-2 rounded-sm text-[10px] tracking-widest font-bold flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(16,185,129,0.3)] uppercase ${isExecuting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[var(--color-success)]/90'}`}>
+            <Zap className={`w-3 h-3 ${isExecuting ? 'animate-pulse' : ''}`} /> {isExecuting ? 'Executing...' : 'Execute Selected Path'}
           </button>
         </div>
       </div>

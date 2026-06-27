@@ -4,6 +4,7 @@ import { Search, Command, Bell, Clock, Cpu, LayoutDashboard, Box, Activity, Brai
 import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import { API_URL } from '@/lib/api'
 
 const COMMANDS = [
   { id: 'nav-dashboard', name: 'Go to Mission Control', type: 'Navigation', path: '/', icon: LayoutDashboard },
@@ -58,8 +59,11 @@ export default function Topbar() {
 
   const filteredCommands = COMMANDS.filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
-  const executeCommand = (cmd: any) => {
+  const executeCommand = async (cmd: any) => {
     setSearchOpen(false)
+    if (cmd.type === 'Action') {
+      await fetch(`${API_URL}/api/scenarios/supply-chain-disruption`, { method: "POST" })
+    }
     router.push(cmd.path)
   }
 

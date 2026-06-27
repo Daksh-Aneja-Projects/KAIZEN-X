@@ -8,11 +8,20 @@ import { Activity, AlertTriangle, ShieldAlert, DollarSign, TrendingUp, Clock, Za
 import { useAppStore, AppEvent } from '@/lib/store'
 import { 
   fetchOverview, fetchLiveEvents, fetchHealthHistory, fetchRadarData, 
-  fetchExecutiveSummary, fetchSystemStatus, fetchFuturesOutcomes, WS_URL 
+  fetchExecutiveSummary, fetchSystemStatus, fetchFuturesOutcomes, WS_URL, API_URL 
 } from '@/lib/api'
+import { useRouter } from 'next/navigation'
 
 export default function ExecutiveCommandCenter() {
   const { events, addEvent, setInitialEvents } = useAppStore()
+  const router = useRouter()
+  const [isRegenerating, setIsRegenerating] = useState(false)
+
+  const handleRegenerate = async () => {
+    setIsRegenerating(true)
+    await fetch(`${API_URL}/api/admin/regenerate-enterprise`, { method: "POST" })
+    window.location.reload()
+  }
 
   // Queries
   const { data: overview } = useQuery({ queryKey: ['overview'], queryFn: fetchOverview, refetchInterval: 5000 })
@@ -248,16 +257,16 @@ export default function ExecutiveCommandCenter() {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-[var(--color-panel)] border border-[var(--color-border-subtle)] p-4 flex flex-col gap-2 flex-1">
+           <div className="bg-[var(--color-panel)] border border-[var(--color-border-subtle)] p-4 flex flex-col gap-2 flex-1">
              <h3 className="text-[9px] uppercase font-mono tracking-widest text-gray-400 mb-1">Quick Actions</h3>
-             <button className="w-full text-left bg-white/[0.02] hover:bg-[var(--color-primary)]/10 border border-[var(--color-border-subtle)] p-2 rounded-sm text-[9px] font-mono text-gray-300 transition-colors">
+             <button onClick={() => router.push('/orchestrator')} className="w-full text-left bg-white/[0.02] hover:bg-[var(--color-primary)]/10 border border-[var(--color-border-subtle)] p-2 rounded-sm text-[9px] font-mono text-gray-300 transition-colors">
                &gt; Run Scenario
              </button>
-             <button className="w-full text-left bg-white/[0.02] hover:bg-[var(--color-primary)]/10 border border-[var(--color-border-subtle)] p-2 rounded-sm text-[9px] font-mono text-gray-300 transition-colors">
+             <button onClick={() => router.push('/war-room')} className="w-full text-left bg-white/[0.02] hover:bg-[var(--color-primary)]/10 border border-[var(--color-border-subtle)] p-2 rounded-sm text-[9px] font-mono text-gray-300 transition-colors">
                &gt; Launch War Room
              </button>
-             <button className="w-full text-left bg-white/[0.02] hover:bg-[var(--color-primary)]/10 border border-[var(--color-border-subtle)] p-2 rounded-sm text-[9px] font-mono text-gray-300 transition-colors">
-               &gt; Generate Report
+             <button disabled={isRegenerating} onClick={handleRegenerate} className={`w-full text-left bg-white/[0.02] hover:bg-[var(--color-critical)]/20 border border-[var(--color-border-subtle)] hover:border-[var(--color-critical)] p-2 rounded-sm text-[9px] font-mono text-[var(--color-critical)] transition-colors ${isRegenerating ? 'opacity-50' : ''}`}>
+               &gt; {isRegenerating ? 'Regenerating...' : 'Regenerate Enterprise'}
              </button>
           </div>
         </div>
