@@ -18,6 +18,16 @@ export default function DigitalTwin() {
 
   const { data: replayEvents } = useQuery({ queryKey: ['twinReplay'], queryFn: fetchTwinReplay })
 
+  // Force layout recalculation after mounting
+  useEffect(() => {
+    if (cyRef.current && elements.length > 0) {
+      setTimeout(() => {
+        cyRef.current?.resize()
+        cyRef.current?.layout({ name: 'grid', fit: true, padding: 150, avoidOverlap: true, avoidOverlapPadding: 50 }).run()
+      }, 50)
+    }
+  }, [elements])
+
   useEffect(() => {
     if (isPlaying && replayEvents && replayEvents.length > 0) {
       const interval = setInterval(() => {
@@ -179,7 +189,7 @@ export default function DigitalTwin() {
         </div>
 
         {/* Cytoscape Canvas */}
-        <div className="w-full h-full bg-[url('/bg-grid.png')] bg-[size:40px_40px] opacity-90">
+        <div className="absolute inset-0 bg-[url('/bg-grid.png')] bg-[size:40px_40px] opacity-90 z-0">
           <CytoscapeComponent
             elements={elements}
             style={{ width: '100%', height: '100%' }}
