@@ -60,6 +60,14 @@ class BootstrapService:
             TwinNode(id="PROJ-PHOENIX", label="Project Phoenix", type=TwinNodeType.PROJECT, status="Critical", health_score=45.0)
         ]
         self.db.add_all(nodes)
+        await self.db.flush()
+
+        edges = [
+            TwinEdge(id="EDGE-1", source_id="VEN-ALPHA", target_id="SYS-ERP", type=TwinEdgeType.SUPPLIES, weight=1.0),
+            TwinEdge(id="EDGE-2", source_id="VEN-BETA", target_id="SYS-ERP", type=TwinEdgeType.SUPPLIES, weight=1.0),
+            TwinEdge(id="EDGE-3", source_id="SYS-ERP", target_id="PROJ-PHOENIX", type=TwinEdgeType.SUPPORTS, weight=1.0)
+        ]
+        self.db.add_all(edges)
 
     async def seed_risks(self):
         risks = [
