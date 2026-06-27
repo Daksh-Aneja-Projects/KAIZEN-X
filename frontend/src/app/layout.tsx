@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
+import EnterpriseCognitiveLayer from "@/cve/EnterpriseCognitiveLayer";
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-sans' });
 const robotoMono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
@@ -25,6 +26,7 @@ export default function RootLayout({
           <Sidebar />
           <div className="flex-1 flex flex-col h-screen overflow-hidden">
             <Topbar />
+            <EnterpriseCognitiveLayer />
             <main className="flex-1 overflow-y-auto overflow-x-hidden">
               {children}
             </main>
